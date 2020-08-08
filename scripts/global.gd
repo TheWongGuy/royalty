@@ -1,11 +1,5 @@
 extends Node
 
-const TILE_TYPE = {
-	'WATER': 2, 
-	'LAND': 1,
-	'VILLAGE': 3
-}
-
 const CITY_NAME_PREFIXES = [
 	"Winter",
 	"Water",
@@ -36,6 +30,5 @@ const CITY_NAME_ENDINGS = [
 	"Falls"
 ]
 
-const KINGDOMS = []
-
-const LAND_CELLS = []
+# Registers itself
+var map

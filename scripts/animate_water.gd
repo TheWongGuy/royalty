@@ -2,21 +2,23 @@ extends Node2D
 
 var timeout = false
 var timer 
-var tilemap
+var tile_map
+var map
 
 func _ready():
-	tilemap = get_parent()
-	timer = tilemap.get_node("WaterTimer")
+	tile_map = get_parent()
+	map = tile_map.get_parent()
+	timer = tile_map.get_node("WaterTimer")
 	timer.connect("timeout", self, "_on_timer_timeout")
 	
-func _process(delta):
+func _process(_delta):
 	if timeout == true:
-		for cell in tilemap.get_used_cells_by_id(Global.TILE_TYPE.WATER):
-			var tile = tilemap.get_cell_autotile_coord(cell.x, cell.y)
+		for cell in map.WATER_CELLS: 
+			var tile = tile_map.get_cell_autotile_coord(cell.location.x, cell.location.y)
 			if(tile == Vector2(1, 1)):
-				tilemap.set_cell(cell.x, cell.y, Global.TILE_TYPE.WATER, false, false, false, Vector2(2, 1))
+				tile_map.set_cell(cell.location.x, cell.location.y, Cell.Type.WATER, false, false, false, Vector2(2, 1))
 			elif(tile == Vector2(2, 1)):
-				tilemap.set_cell(cell.x, cell.y, Global.TILE_TYPE.WATER, false, false, false, Vector2(1, 1))
+				tile_map.set_cell(cell.location.x, cell.location.y, Cell.Type.WATER, false, false, false, Vector2(1, 1))
 		timeout = false
 			
 
