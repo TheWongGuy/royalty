@@ -16,3 +16,12 @@ var land_mass # reference to land mass of current cell
 func  _init(location : Vector2, type : int):
 	self.location = location
 	self.type = type
+
+
+func draw() -> void:
+	match type:
+		Type.VILLAGE:
+			Global.map.civilization_map.set_cellv(location, type)
+		_:
+			Global.map.tile_map.set_cellv(location, type)
+

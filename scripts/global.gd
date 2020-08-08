@@ -29,3 +29,6 @@ const CITY_NAME_ENDINGS = [
 	"Keep",
 	"Falls"
 ]
+
+# Registers itself
+var map

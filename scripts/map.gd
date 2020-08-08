@@ -18,6 +18,7 @@ func get_cell(location : Vector2) -> Cell:
 	return CELL_MAP[location] as Cell
 
 func _ready():
+	Global.map = self
 	tile_map = get_node("TileMap")
 	civilization_map = get_node("CivilizationMap")
 
@@ -124,13 +125,17 @@ func _refresh_cell_indexes() -> void:
 func _draw_map():
 	print("Drawing Map")
 	for cell in CELL_MAP.values():
-		tile_map.set_cellv(cell.location, cell.type)
+		cell.draw()
 	_update_bitmask()
-	print(len(get_children()))
 	
 func _clean_up():
+	print("Cleaning Up Cells")
 	for cell in CELL_MAP.values():
-		print(get_child_count())
+		cell.free()
+	LAND_CELLS.clear()
+	WATER_CELLS.clear()
+	CELL_MAP.clear()
+
 
 func _update_bitmask():
 	tile_map.update_bitmask_region(Vector2(0, 0), map_size)

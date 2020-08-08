@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "Cell",
 "language": "GDScript",
-"path": "res://scripts/Cell.gd"
+"path": "res://scripts/cell.gd"
 }, {
 "base": "Node2D",
 "class": "Kingdom",
