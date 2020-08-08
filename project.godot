@@ -8,16 +8,25 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Kingdom",
+"language": "GDScript",
+"path": "res://scripts/kingdom.gd"
+} ]
 _global_script_class_icons={
-
+"Kingdom": ""
 }
 
 [application]
 
 config/name="royalty"
-run/main_scene="res://test.tscn"
+run/main_scene="res://devscene.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Global="*res://scripts/global.gd"
 
 [display]
 

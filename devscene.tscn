@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://tiles/groundtiles.tres" type="TileSet" id=1]
+[ext_resource path="res://scripts/world_generation.gd" type="Script" id=2]
+[ext_resource path="res://scripts/camera_controller.gd" type="Script" id=3]
+[ext_resource path="res://scripts/animate_water.gd" type="Script" id=4]
+
+[node name="World" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+cell_custom_transform = Transform2D( 16, 0, 0, 16, 0, 0 )
+format = 1
+
+[node name="WaterTimer" type="Timer" parent="TileMap"]
+wait_time = 1.5
+autostart = true
+
+[node name="WaterAnimator" type="Node2D" parent="TileMap"]
+script = ExtResource( 4 )
+
+[node name="KingdomMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+cell_custom_transform = Transform2D( 16, 16, 0, 16, 0, 0 )
+format = 1
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+script = ExtResource( 3 )
