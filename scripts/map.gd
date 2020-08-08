@@ -11,6 +11,7 @@ var civilization_map
 
 const CIVILIZATIONS = []
 const LAND_CELLS = []
+const WATER_CELLS = []
 const CELL_MAP = {}
 
 func get_cell(location : Vector2) -> Cell:
@@ -21,9 +22,11 @@ func _ready():
 	civilization_map = get_node("CivilizationMap")
 
 func generate() -> void:
+	_clean_up()
 	_generate_cell_map()
 	for _i in range(4):
 		_smooth()
+	_refresh_cell_indexes()
 	_draw_map()
 
 func _generate_cell_map() -> void:
@@ -82,6 +85,16 @@ func _get_neighbour_land_count(location : Vector2) -> int:
 
 	return land_count
 			
+func _refresh_cell_indexes() -> void:
+	LAND_CELLS.clear()
+	WATER_CELLS.clear()
+	for cell in CELL_MAP.values():
+		cell = cell as Cell
+		match cell.type:
+			Cell.Type.WATER:
+				WATER_CELLS.append(cell)
+			Cell.Type.LAND:
+				LAND_CELLS.append(cell)
 #func refresh_land_tiles():
 #	Global.LAND_CELLS.clear()
 #	for x in map_size.x:
@@ -113,6 +126,11 @@ func _draw_map():
 	for cell in CELL_MAP.values():
 		tile_map.set_cellv(cell.location, cell.type)
 	_update_bitmask()
+	print(len(get_children()))
+	
+func _clean_up():
+	for cell in CELL_MAP.values():
+		print(get_child_count())
 
 func _update_bitmask():
 	tile_map.update_bitmask_region(Vector2(0, 0), map_size)
