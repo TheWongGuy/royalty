@@ -16,7 +16,6 @@ format = 1
 
 [node name="WaterTimer" type="Timer" parent="TileMap"]
 wait_time = 1.5
-autostart = true
 
 [node name="WaterAnimator" type="Node2D" parent="TileMap"]
 script = ExtResource( 4 )

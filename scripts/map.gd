@@ -3,7 +3,7 @@ extends Node2D
 class_name Map
 
 export var water_percentage = 50
-export var map_size = Vector2(50, 50)
+export var map_size = Vector2(500, 500)
 export var civilization_count = 3
 
 var tile_map
@@ -38,10 +38,10 @@ func _generate_cell_map() -> void:
 			var cell_type = randi() % 100
 			if cell_type < water_percentage:
 				CELL_MAP[location] = Cell.new(location, Cell.Type.WATER)
-				add_child(CELL_MAP[location])
 			else:
 				CELL_MAP[location] = Cell.new(location, Cell.Type.LAND)
 	_create_water_border()
+	_update_neighbours()
 
 func _create_water_border() -> void:
 	for x in map_size.x:
@@ -55,24 +55,22 @@ func _create_water_border() -> void:
 		get_cell(Vector2(map_size.x-1, y)).type = Cell.Type.WATER
 		get_cell(Vector2(map_size.x-2, y)).type = Cell.Type.WATER
 		
+func _update_neighbours() -> void:
+	for cell in CELL_MAP.values():
+		cell.set_neighbours(_get_neighbours(cell.location))
+		
 func _smooth() -> void:
 	for x in range(1, map_size.x-1):
 		for y in range(1, map_size.y-1):
-			_iterate_cell(Vector2(x, y))
-	
-func _iterate_cell(location : Vector2) -> void:
-	var land_count = _get_neighbour_land_count(location)
-	
-	if land_count < 4:
-		get_cell(location).type = Cell.Type.WATER
-	elif land_count > 4:
-		get_cell(location).type = Cell.Type.LAND
+			get_cell(Vector2(x, y)).interate_cell()	
 
-# Consider moving this logic into cells, avoiding for now
-func _get_neighbour_land_count(location : Vector2) -> int:
-	var land_count = 0
+# Consider moving this logic into cells, ignoring for now
+# This function sucks fix it later.
+func _get_neighbours(location : Vector2):
 	var top_left = Vector2(location.x-1, location.y-1)
 	var bottom_right = Vector2(location.x+1, location.y+1)
+	
+	var neighbours = []
 
 	for local_x in range(top_left.x, bottom_right.x + 1):
 		for local_y in range(top_left.y, bottom_right.y + 1):
@@ -81,10 +79,8 @@ func _get_neighbour_land_count(location : Vector2) -> int:
 				continue
 			if(local_pos.x <= -1 or local_pos.x >= map_size.x or local_pos.y <= -1 or local_pos.y >= map_size.y):
 				continue
-			if(get_cell(local_pos).type == Cell.Type.LAND):
-				land_count += 1
-
-	return land_count
+			neighbours.append(get_cell(local_pos))
+	return neighbours
 			
 func _refresh_cell_indexes() -> void:
 	LAND_CELLS.clear()
@@ -135,7 +131,6 @@ func _clean_up():
 	LAND_CELLS.clear()
 	WATER_CELLS.clear()
 	CELL_MAP.clear()
-
 
 func _update_bitmask():
 	tile_map.update_bitmask_region(Vector2(0, 0), map_size)
